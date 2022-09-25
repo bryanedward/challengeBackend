@@ -1,0 +1,216 @@
+{
+    "openapi": "3.0.0",
+    "servers": [{
+            "description": "SwaggerHub API Auto Mocking",
+            "url": "https://virtserver.swaggerhub.com/bryanedward/devka/1.0.0"
+        }, {
+            "description": "documentacion de la pi",
+            "url": "https://bryanedward.github.io/webapp/"
+        }],
+    "info": {
+        "description": "Api  about vehicle",
+        "version": "1.0.0",
+        "title": "Api vehicle",
+        "contact": {
+            "email": "edwardbrian96@gmail.com"
+        }
+    },
+    "tags": [{
+            "name": "vehicle",
+            "description": "insert update create delete vehicle"
+        }, {
+            "name": "login",
+            "description": "login app"
+        }],
+    "paths": {
+        "/vehicle": {
+            "get": {
+                "tags": ["vehicle"],
+                "description": "crud vehicle",
+                "responses": {
+                    "200": {
+                        "description": "array the",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Vehicle"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["vehicle"],
+                "description": "create vehicle",
+                "responses": {
+                    "200": {
+                        "description": "user create"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "edward@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "description": "Object login user"
+                }
+            }
+        },
+        "/vehicle/{id}": {
+            "delete": {
+                "tags": ["vehicle"],
+                "parameters": [{
+                        "name": "id",
+                        "in": "path",
+                        "description": "id delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }],
+                "responses": {
+                    "400": {
+                        "description": "error delete vehicle"
+                    }
+                }
+            }
+        },
+        "/vehicle/update": {
+            "post": {
+                "tags": ["vehicle"],
+                "description": "update vehicle",
+                "responses": {
+                    "200": {
+                        "description": "update vehicle"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "plate": {
+                                        "type": "string",
+                                        "example": "placax3"
+                                    },
+                                    "model": {
+                                        "type": "string",
+                                        "example": "modela3"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "car"
+                                    },
+                                    "capacity": {
+                                        "type": "string",
+                                        "example": "medium"
+                                    },
+                                    "driver_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver": {
+            "post": {
+                "tags": ["login"],
+                "summary": "login user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "edward@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "login user"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Driver": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "edwardbrian96@gmail.com"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "example": "edward"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Pomaquero"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "0983258685"
+                    }
+                }
+            },
+            "Vehicle": {
+                "type": "object",
+                "required": ["driver_id", "first_name", "plate", "model", "type", "capacity", "creation_date"],
+                "properties": {
+                    "driver_id": {
+                        "type": "number",
+                        "format": "uuid",
+                        "example": 1
+                    },
+                    "plate": {
+                        "type": "string",
+                        "example": "idtest"
+                    },
+                    "model": {
+                        "type": "string",
+                        "example": "quibusdamedit"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "cartest"
+                    },
+                    "capacity": {
+                        "type": "string",
+                        "example": "large"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Driver"
+                    }
+                }
+            }
+        }
+    }
+}

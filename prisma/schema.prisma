@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model company {
+  id            Int       @id @default(autoincrement())
+  name          String?   @unique(map: "name_unique") @db.VarChar(100)
+  city          Int
+  status        String    @default("active") @db.VarChar(20)
+  plan_type     String    @default("prepaid") @db.VarChar(20)
+  creation_date DateTime? @default(now()) @db.Timestamp(0)
+  driver        driver[]
+
+  @@index([city], map: "city_idx")
+  @@index([creation_date], map: "creation_date_idx")
+  @@index([name], map: "name_idx")
+}
+
+model driver {
+  id            Int       @id @default(autoincrement())
+  company_id    Int?
+  city          Int?
+  first_name    String    @db.VarChar(100)
+  last_name     String?   @db.VarChar(100)
+  email         String    @unique(map: "email") @db.VarChar(100)
+  phone         String    @db.VarChar(20)
+  avatar_url    String?   @db.VarChar(200)
+  status        String    @db.VarChar(20)
+  creation_date DateTime? @default(now()) @db.Timestamp(0)
+  company       company?  @relation(fields: [company_id], references: [id], onUpdate: NoAction, map: "driver_ibfk_1")
+  vehicle       vehicle[]
+
+  @@index([city], map: "city_idx")
+  @@index([company_id], map: "company_key")
+  @@index([creation_date], map: "creation_date_idx")
+  @@index([first_name], map: "first_name_idx")
+}
+
+model vehicle {
+  id            Int       @id @default(autoincrement())
+  driver_id     Int?
+  plate         String    @db.VarChar(100)
+  model         String    @db.VarChar(100)
+  type          String    @db.VarChar(20)
+  capacity      String    @db.VarChar(20)
+  creation_date DateTime? @default(now()) @db.Timestamp(0)
+  driver        driver?   @relation(fields: [driver_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "vehicle_ibfk_1")
+
+  @@index([creation_date], map: "creation_date_idx")
+  @@index([driver_id], map: "driver_key")
+  @@index([type], map: "type_idx")
+}
