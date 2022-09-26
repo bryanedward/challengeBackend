@@ -73,7 +73,9 @@ export const updateVehicle = async (req: Request, res: Response) => {
     });
     res.status(200).send(updateUser);
   } catch (error) {
-    throw new Error("erro update");
+    res.status(400).json({
+      message: "error",
+    });
   }
 };
 
@@ -86,6 +88,8 @@ export const deleteVehicle = async (req: Request, res: Response) => {
     });
     res.status(200).json({ message: "delete item" });
   } catch (error) {
-    throw new Error("error delete");
+    res.status(400).json({
+      message: "error",
+    });
   }
 };
