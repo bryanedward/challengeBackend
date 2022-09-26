@@ -23,7 +23,11 @@ router.post(
     check("capacity").not().isEmpty(),
     handleLanguageHeader,
   ],
-  createVehicle
+  async (req: Request, res: Response) => {
+    createVehicle(req.body).then((data) => {
+      res.status(200).send(data);
+    });
+  }
 );
 
 router.post(
@@ -35,7 +39,11 @@ router.post(
     check("capacity").not().isEmpty(),
     handleLanguageHeader,
   ],
-  updateVehicle
+  async (req: Request, res: Response) => {
+    updateVehicle(req.body).then((data) => {
+      res.status(200).send(data);
+    });
+  }
 );
 
 router.delete("/", deleteVehicle);

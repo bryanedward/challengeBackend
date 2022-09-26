@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import { ModelVehicle } from "../models/Vehicle";
 const prisma = new PrismaClient();
 
 export const getDrive = async (id: any = 1) => {
@@ -37,11 +38,16 @@ export const getDrive = async (id: any = 1) => {
   };
 };
 
-export const createVehicle = async (req: Request, res: Response) => {
+export const createVehicle = async ({
+  driver_id,
+  plate,
+  model,
+  type,
+  capacity,
+}: ModelVehicle) => {
   // create
-  const { driver_id, plate, model, type, capacity } = req.body;
   try {
-    const dateVehicle = await prisma.vehicle.create({
+    const dataVehicle = await prisma.vehicle.create({
       data: {
         driver_id,
         plate,
@@ -51,14 +57,20 @@ export const createVehicle = async (req: Request, res: Response) => {
         creation_date: new Date(),
       },
     });
-    res.status(200).send(dateVehicle);
+    return dataVehicle;
   } catch (error) {
-    res.status(400).json({ message: "error with the create " });
+    return error;
   }
 };
 
-export const updateVehicle = async (req: Request, res: Response) => {
-  const { driver_id, plate, model, type, capacity } = req.body;
+export const updateVehicle = async ({
+  driver_id,
+  plate,
+  model,
+  type,
+  capacity,
+}: ModelVehicle) => {
+  // update vehicle
   try {
     const updateUser = await prisma.vehicle.update({
       where: {
@@ -71,11 +83,9 @@ export const updateVehicle = async (req: Request, res: Response) => {
         capacity,
       },
     });
-    res.status(200).send(updateUser);
+    return updateUser;
   } catch (error) {
-    res.status(400).json({
-      message: "error",
-    });
+    return error;
   }
 };
 

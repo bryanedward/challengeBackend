@@ -1,8 +1,7 @@
 export interface ModelVehicle {
-  driver_id: Number;
-  plate: String;
-  model: String;
-  type: String;
-  capacity: String;
-  creation_date: Date;
+  driver_id: number;
+  plate: string;
+  model: string;
+  type: string;
+  capacity: string;
 }
