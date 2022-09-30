@@ -3,7 +3,7 @@
 
 ## Ejecutar comandos
 
-En el presente proyecto se levanta el servicio con
+En el presente proyecto se levanta el servicio
 
 ### `npm i`
 ### `npm run dev`
