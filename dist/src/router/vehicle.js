@@ -15,8 +15,13 @@ const vehicle_1 = require("../controllers/vehicle");
 const validator_1 = require("../middleware/validator");
 const router = (0, express_1.Router)();
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const results = yield (0, vehicle_1.getDrive)(req.query.id);
+    const results = yield (0, vehicle_1.getDrive)(req.query.start);
     res.status(200).json(results);
+}));
+router.get("/find", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, vehicle_1.filterVehicle)(Number(req.query.driver_id), Number(req.query.limit)).then((data) => {
+        res.status(200).json(data);
+    });
 }));
 router.post("/", [
     (0, express_validator_1.check)("plate").not().isEmpty(),
@@ -24,13 +29,21 @@ router.post("/", [
     (0, express_validator_1.check)("type").not().isEmpty(),
     (0, express_validator_1.check)("capacity").not().isEmpty(),
     validator_1.handleLanguageHeader,
-], vehicle_1.createVehicle);
+], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, vehicle_1.createVehicle)(req.body).then((data) => {
+        res.status(200).send(data);
+    });
+}));
 router.post("/update", [
     (0, express_validator_1.check)("plate").not().isEmpty(),
     (0, express_validator_1.check)("model").not().isEmpty(),
     (0, express_validator_1.check)("type").not().isEmpty(),
     (0, express_validator_1.check)("capacity").not().isEmpty(),
     validator_1.handleLanguageHeader,
-], vehicle_1.updateVehicle);
+], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, vehicle_1.updateVehicle)(req.body).then((data) => {
+        res.status(200).send(data);
+    });
+}));
 router.delete("/", vehicle_1.deleteVehicle);
 exports.default = router;

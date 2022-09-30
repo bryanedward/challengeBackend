@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVehicle = exports.updateVehicle = exports.createVehicle = exports.getDrive = void 0;
+exports.deleteVehicle = exports.filterVehicle = exports.updateVehicle = exports.createVehicle = exports.getDrive = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getDrive = (id = 1) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,11 +46,10 @@ const getDrive = (id = 1) => __awaiter(void 0, void 0, void 0, function* () {
     };
 });
 exports.getDrive = getDrive;
-const createVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createVehicle = ({ driver_id, plate, model, type, capacity, }) => __awaiter(void 0, void 0, void 0, function* () {
     // create
-    const { driver_id, plate, model, type, capacity } = req.body;
     try {
-        const dateVehicle = yield prisma.vehicle.create({
+        const dataVehicle = yield prisma.vehicle.create({
             data: {
                 driver_id,
                 plate,
@@ -60,15 +59,15 @@ const createVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 creation_date: new Date(),
             },
         });
-        res.status(200).send(dateVehicle);
+        return dataVehicle;
     }
     catch (error) {
-        res.status(400).json({ message: "error with the create " });
+        return error;
     }
 });
 exports.createVehicle = createVehicle;
-const updateVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { driver_id, plate, model, type, capacity } = req.body;
+const updateVehicle = ({ driver_id, plate, model, type, capacity, }) => __awaiter(void 0, void 0, void 0, function* () {
+    // update vehicle
     try {
         const updateUser = yield prisma.vehicle.update({
             where: {
@@ -81,13 +80,30 @@ const updateVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 capacity,
             },
         });
-        res.status(200).send(updateUser);
+        return updateUser;
     }
     catch (error) {
-        throw new Error("erro update");
+        return error;
     }
 });
 exports.updateVehicle = updateVehicle;
+const filterVehicle = (_driver_id, limit) => __awaiter(void 0, void 0, void 0, function* () {
+    // get the vehicles by id user
+    try {
+        const getVehicle = prisma.vehicle.findMany({
+            take: Number(limit),
+            skip: 1,
+            // where: {
+            //   driver_id: Number(driver_id),
+            // },
+        });
+        return getVehicle;
+    }
+    catch (error) {
+        throw error;
+    }
+});
+exports.filterVehicle = filterVehicle;
 const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield prisma.vehicle.delete({
@@ -98,7 +114,9 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(200).json({ message: "delete item" });
     }
     catch (error) {
-        throw new Error("error delete");
+        res.status(400).json({
+            message: "error",
+        });
     }
 });
 exports.deleteVehicle = deleteVehicle;
