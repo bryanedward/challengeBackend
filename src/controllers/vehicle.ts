@@ -89,6 +89,22 @@ export const updateVehicle = async ({
   }
 };
 
+export const filterVehicle = async (_driver_id: Number, limit: Number) => {
+  // get the vehicles by id user
+  try {
+    const getVehicle = prisma.vehicle.findMany({
+      take: Number(limit),
+      skip: 1,
+      // where: {
+      //   driver_id: Number(driver_id),
+      // },
+    });
+    return getVehicle;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteVehicle = async (req: Request, res: Response) => {
   try {
     await prisma.vehicle.delete({
